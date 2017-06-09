@@ -151,7 +151,7 @@ Object.keys(aliases).sort().forEach(alias => {
 });
 
 bt.push(`declare class BabelTypes {`);
-bt.push(`  constructor(t: Object): BabelTypes`);
+bt.push(`  constructor(t: Object): BabelTypes;`);
 // Builders
 Object.keys(types.BUILDER_KEYS).sort().forEach(key => {
   bt.push(
