@@ -1,0 +1,52 @@
+{
+  "name": "flow-babel-types",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "description": "babel-types but with flow types",
+  "keywords": [],
+  "files": [
+    "lib/",
+    "babel-nodes.js"
+  ],
+  "dependencies": {
+    "babel-runtime": "^6.18.0"
+  },
+  "devDependencies": {
+    "babel-cli": "*",
+    "babel-jest": "*",
+    "babel-preset-forbeslindesay": "*",
+    "babel-types": "^6.25.0",
+    "eslint": "*",
+    "eslint-config-forbeslindesay": "*",
+    "husky": "*",
+    "jest": "*",
+    "lint-staged": "*",
+    "mkdirp": "^0.5.1",
+    "prettier": "*"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "prepublish": "npm run build",
+    "prettier": "prettier --single-quote --trailing-comma all --no-bracket-spacing --write \"src/**/*.js\"",
+    "prettier:check": "prettier --single-quote --trailing-comma all --no-bracket-spacing --list-different \"src/**/*.js\"",
+    "build": "babel-node src/generate-code.js && npm run prettier && babel src/index.js > lib/index.js",
+    "lint": "eslint src",
+    "test": "jest ./src --coverage && npm run lint",
+    "watch": "jest ./src --coverage --watch"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --single-quote --trailing-comma all --no-bracket-spacing --write",
+      "git add"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ForbesLindesay/flow-babel-types.git"
+  },
+  "author": {
+    "name": "Forbes Lindesay",
+    "url": "http://github.com/ForbesLindesay"
+  },
+  "license": "MIT"
+}
