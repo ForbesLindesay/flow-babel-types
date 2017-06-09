@@ -8,7 +8,7 @@ function isKeyword(n) {
   return n === 'extends' || n === 'arguments' || n === 'static';
 }
 function addNode(v) {
-  if (v === 'null') return v;
+  if (v[0] === v[0].toLowerCase()) return v;
   return v + 'Node';
 }
 function getTypeFromValidator(validator) {
@@ -50,25 +50,38 @@ function getTypeFromValidator(validator) {
 
 const customTypes = {
   ClassMethod: {
-    key: `Expression`,
+    key: `ExpressionNode`,
   },
   Identifier: {
     name: `string`,
   },
   MemberExpression: {
-    property: `Expression`,
+    property: `ExpressionNode`,
   },
   ObjectMethod: {
-    key: `Expression`,
+    key: `ExpressionNode`,
   },
   ObjectProperty: {
-    key: `Expression`,
+    key: `ExpressionNode`,
   },
 };
 
 function getType(key, field) {
   const validator = types.NODE_FIELDS[key][field].validate;
   if (customTypes[key] && customTypes[key][field]) {
+    let type = null;
+    if (validator) {
+      try {
+        type = getTypeFromValidator(validator);
+      } catch (ex) {
+        if (ex.code !== 'UNEXPECTED_VALIDATOR_TYPE') {
+          throw ex;
+        }
+      }
+    }
+    if (type === customTypes[key][field]) {
+      throw new Error(`Custom type for ${key}.${field} is not needed.`);
+    }
     return customTypes[key][field];
   } else if (validator) {
     try {
