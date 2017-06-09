@@ -1,5 +1,7 @@
 # flow-babel-types
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ForbesLindesay/flow-babel-types.svg)](https://greenkeeper.io/)
+
 babel-types but with flow types
 
 [![Build Status](https://img.shields.io/travis/ForbesLindesay/flow-babel-types/master.svg)](https://travis-ci.org/ForbesLindesay/flow-babel-types)
