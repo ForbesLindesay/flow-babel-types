@@ -8,11 +8,12 @@ function isKeyword(n) {
   return n === 'extends' || n === 'arguments' || n === 'static';
 }
 function addNode(v) {
+  if (v === 'null') return v;
   return v + 'Node';
 }
 function getTypeFromValidator(validator) {
   if (validator.type) {
-    return validator.type;
+    return addNode(validator.type);
   } else if (validator.oneOfNodeTypes) {
     return validator.oneOfNodeTypes.map(addNode).join(' | ');
   } else if (validator.oneOfNodeOrValueTypes) {
