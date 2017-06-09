@@ -105,7 +105,7 @@ Object.keys(types.BUILDER_KEYS).sort().forEach(key => {
       if (indexB === -1) return -1;
       return indexA - indexB;
     })
-    .forEach((field) => {
+    .forEach(field => {
       const t = getType(key, field);
       const optional = types.NODE_FIELDS[key][field].optional ? '?' : '';
       if (field === 'static') {
@@ -181,12 +181,16 @@ allTypes.forEach(key => {
 });
 // asX
 allTypes.forEach(key => {
-  bt.push(`  as${key}(value: BabelNode, opts?: Object): ${addNode(key)} | void;`);
+  bt.push(
+    `  as${key}(value: BabelNode, opts?: Object): ${addNode(key)} | void;`,
+  );
 });
 // switchX
 Object.keys(aliases).sort().forEach(alias => {
   bt.push(
-    `  switch${alias}<T>(node: ${addNode(alias)}, switcher: ${alias}Switcher<T>): T;`,
+    `  switch${alias}<T>(node: ${addNode(
+      alias,
+    )}, switcher: ${alias}Switcher<T>): T;`,
   );
 });
 bt.push(`}`);
