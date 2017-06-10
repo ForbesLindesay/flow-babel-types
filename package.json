@@ -1,6 +1,6 @@
 {
   "name": "flow-babel-types",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "lib/index.js",
   "description": "babel-types but with flow types",
   "keywords": [],
