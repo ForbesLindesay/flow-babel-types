@@ -26,5 +26,4 @@ node_modules
 environment.toml
 
 package-lock.json
-/babel-nodes.js
 /src/index.js
