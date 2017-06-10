@@ -26,9 +26,10 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "prepublish": "npm run build",
-    "prettier": "prettier --single-quote --trailing-comma all --no-bracket-spacing --write \"src/**/*.js\"",
-    "prettier:check": "prettier --single-quote --trailing-comma all --no-bracket-spacing --list-different \"src/**/*.js\"",
+    "prepublish": "npm run build && (git diff-index --quiet HEAD -- || echo You must build and commit changes) && git diff-index --quiet HEAD --",
+    "prettier:config": "prettier --single-quote --trailing-comma all --no-bracket-spacing",
+    "prettier:paths": "npm run prettier:config -- \"src/**/*.js\" \"babel-nodes.js\" \"lib/index.js.flow\"",
+    "prettier": "npm run prettier:paths -- --write",
     "build": "babel-node src/generate-code.js && npm run prettier && babel src/index.js > lib/index.js",
     "lint": "eslint src",
     "test": "jest ./src --coverage && npm run lint",
@@ -36,7 +37,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --single-quote --trailing-comma all --no-bracket-spacing --write",
+      "npm run prettier:config -- --write",
       "git add"
     ]
   },
