@@ -202,9 +202,7 @@ allTypes.forEach(key => {
 // mapX
 Object.keys(aliases).sort().forEach(alias => {
   bt.push(
-    `  map${alias}<T>(node: ${addNode(
-      alias,
-    )}, mapper: ${alias}Mapper<T>): T;`,
+    `  map${alias}<T>(node: ${addNode(alias)}, mapper: ${alias}Mapper<T>): T;`,
   );
 });
 bt.push(`}`);
