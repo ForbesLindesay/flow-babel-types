@@ -93,9 +93,15 @@ function getType(key, field) {
       } else {
         throw ex;
       }
+      if (field === 'id') {
+        return 'Identifier';
+      }
       return 'mixed';
     }
   } else {
+    if (field === 'id') {
+      return 'Identifier';
+    }
     return 'mixed';
   }
 }
