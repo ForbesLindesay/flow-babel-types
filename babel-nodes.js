@@ -15,7 +15,7 @@ declare class AnyTypeAnnotationNode {
 declare class ArrayExpressionNode {
   type: 'ArrayExpression';
   loc: ?Location;
-  elements: $ReadOnlyArray<null | ExpressionNode | SpreadElementNode>;
+  elements: $ReadOnlyArray<ArrayExpressionElementsNode | null>;
 
   // alias: Expression
   // alias: Babel
@@ -24,7 +24,7 @@ declare class ArrayExpressionNode {
 declare class ArrayPatternNode {
   type: 'ArrayPattern';
   loc: ?Location;
-  elements: $ReadOnlyArray<IdentifierNode | PatternNode | RestElementNode>;
+  elements: $ReadOnlyArray<ArrayPatternElementsNode>;
   typeAnnotation: mixed;
   decorators: ?$ReadOnlyArray<DecoratorNode>;
 
@@ -46,7 +46,7 @@ declare class ArrowFunctionExpressionNode {
   type: 'ArrowFunctionExpression';
   loc: ?Location;
   params: $ReadOnlyArray<LValNode>;
-  body: BlockStatementNode | ExpressionNode;
+  body: ArrowFunctionExpressionBodyNode;
   async: boolean;
   returnType: ?mixed;
   typeParameters: ?mixed;
@@ -125,6 +125,7 @@ declare class BlockStatementNode {
   // alias: BlockParent
   // alias: Block
   // alias: Statement
+  // alias: ArrowFunctionExpressionBody
   // alias: Babel
 }
 
@@ -172,7 +173,7 @@ declare class CallExpressionNode {
   type: 'CallExpression';
   loc: ?Location;
   callee: ExpressionNode;
-  arguments: $ReadOnlyArray<ExpressionNode | SpreadElementNode>;
+  arguments: $ReadOnlyArray<ArrayExpressionElementsNode>;
 
   // alias: Expression
   // alias: Babel
@@ -191,7 +192,7 @@ declare class CatchClauseNode {
 declare class ClassBodyNode {
   type: 'ClassBody';
   loc: ?Location;
-  body: $ReadOnlyArray<ClassMethodNode | ClassPropertyNode>;
+  body: $ReadOnlyArray<ClassBodyBodyNode>;
 
   // alias: Babel
 }
@@ -264,6 +265,7 @@ declare class ClassMethodNode {
   // alias: BlockParent
   // alias: FunctionParent
   // alias: Method
+  // alias: ClassBodyBody
   // alias: Babel
 }
 
@@ -277,6 +279,7 @@ declare class ClassPropertyNode {
   computed: boolean;
 
   // alias: Property
+  // alias: ClassBodyBody
   // alias: Babel
 }
 
@@ -491,7 +494,7 @@ declare class ExportAllDeclarationNode {
 declare class ExportDefaultDeclarationNode {
   type: 'ExportDefaultDeclaration';
   loc: ?Location;
-  declaration: FunctionDeclarationNode | ClassDeclarationNode | ExpressionNode;
+  declaration: ExportDefaultDeclarationDeclarationNode;
 
   // alias: Statement
   // alias: Declaration
@@ -565,7 +568,7 @@ declare class FileNode {
 declare class ForAwaitStatementNode {
   type: 'ForAwaitStatement';
   loc: ?Location;
-  left: VariableDeclarationNode | LValNode;
+  left: ForAwaitStatementLeftNode;
   right: ExpressionNode;
   body: StatementNode;
 
@@ -581,7 +584,7 @@ declare class ForAwaitStatementNode {
 declare class ForInStatementNode {
   type: 'ForInStatement';
   loc: ?Location;
-  left: VariableDeclarationNode | LValNode;
+  left: ForAwaitStatementLeftNode;
   right: ExpressionNode;
   body: StatementNode;
 
@@ -597,7 +600,7 @@ declare class ForInStatementNode {
 declare class ForOfStatementNode {
   type: 'ForOfStatement';
   loc: ?Location;
-  left: VariableDeclarationNode | LValNode;
+  left: ForAwaitStatementLeftNode;
   right: ExpressionNode;
   body: StatementNode;
 
@@ -613,7 +616,7 @@ declare class ForOfStatementNode {
 declare class ForStatementNode {
   type: 'ForStatement';
   loc: ?Location;
-  init: ?VariableDeclarationNode | ExpressionNode;
+  init: ?ForStatementInitNode;
   test: ?ExpressionNode;
   update: ?ExpressionNode;
   body: StatementNode;
@@ -644,6 +647,7 @@ declare class FunctionDeclarationNode {
   // alias: Statement
   // alias: Pureish
   // alias: Declaration
+  // alias: ExportDefaultDeclarationDeclaration
   // alias: Babel
 }
 
@@ -708,6 +712,7 @@ declare class IdentifierNode {
 
   // alias: Expression
   // alias: LVal
+  // alias: ArrayPatternElements
   // alias: Babel
 }
 
@@ -734,7 +739,7 @@ declare class ImportNode {
 declare class ImportDeclarationNode {
   type: 'ImportDeclaration';
   loc: ?Location;
-  specifiers: $ReadOnlyArray<ImportSpecifierNode | ImportDefaultSpecifierNode | ImportNamespaceSpecifierNode>;
+  specifiers: $ReadOnlyArray<ImportDeclarationSpecifiersNode>;
   source: StringLiteralNode;
 
   // alias: Statement
@@ -749,6 +754,7 @@ declare class ImportDefaultSpecifierNode {
   local: IdentifierNode;
 
   // alias: ModuleSpecifier
+  // alias: ImportDeclarationSpecifiers
   // alias: Babel
 }
 
@@ -758,6 +764,7 @@ declare class ImportNamespaceSpecifierNode {
   local: IdentifierNode;
 
   // alias: ModuleSpecifier
+  // alias: ImportDeclarationSpecifiers
   // alias: Babel
 }
 
@@ -769,6 +776,7 @@ declare class ImportSpecifierNode {
   importKind: ?null | 'type' | 'typeof';
 
   // alias: ModuleSpecifier
+  // alias: ImportDeclarationSpecifiers
   // alias: Babel
 }
 
@@ -809,8 +817,8 @@ declare class IntersectionTypeAnnotationNode {
 declare class JSXAttributeNode {
   type: 'JSXAttribute';
   loc: ?Location;
-  name: JSXIdentifierNode | JSXNamespacedNameNode;
-  value: ?JSXElementNode | StringLiteralNode | JSXExpressionContainerNode;
+  name: JSXAttributeNameNode;
+  value: ?JSXAttributeValueNode;
 
   // alias: JSX
   // alias: Immutable
@@ -820,7 +828,7 @@ declare class JSXAttributeNode {
 declare class JSXClosingElementNode {
   type: 'JSXClosingElement';
   loc: ?Location;
-  name: JSXIdentifierNode | JSXMemberExpressionNode;
+  name: JSXClosingElementNameNode;
 
   // alias: JSX
   // alias: Immutable
@@ -832,12 +840,14 @@ declare class JSXElementNode {
   loc: ?Location;
   openingElement: JSXOpeningElementNode;
   closingElement: ?JSXClosingElementNode;
-  children: $ReadOnlyArray<JSXTextNode | JSXExpressionContainerNode | JSXSpreadChildNode | JSXElementNode>;
+  children: $ReadOnlyArray<JSXElementChildrenNode>;
   selfClosing: mixed;
 
   // alias: JSX
   // alias: Immutable
   // alias: Expression
+  // alias: JSXAttributeValue
+  // alias: JSXElementChildren
   // alias: Babel
 }
 
@@ -857,6 +867,8 @@ declare class JSXExpressionContainerNode {
 
   // alias: JSX
   // alias: Immutable
+  // alias: JSXAttributeValue
+  // alias: JSXElementChildren
   // alias: Babel
 }
 
@@ -867,17 +879,20 @@ declare class JSXIdentifierNode {
 
   // alias: JSX
   // alias: Expression
+  // alias: JSXAttributeName
+  // alias: JSXClosingElementName
   // alias: Babel
 }
 
 declare class JSXMemberExpressionNode {
   type: 'JSXMemberExpression';
   loc: ?Location;
-  object: JSXMemberExpressionNode | JSXIdentifierNode;
+  object: JSXClosingElementNameNode;
   property: JSXIdentifierNode;
 
   // alias: JSX
   // alias: Expression
+  // alias: JSXClosingElementName
   // alias: Babel
 }
 
@@ -888,14 +903,15 @@ declare class JSXNamespacedNameNode {
   name: JSXIdentifierNode;
 
   // alias: JSX
+  // alias: JSXAttributeName
   // alias: Babel
 }
 
 declare class JSXOpeningElementNode {
   type: 'JSXOpeningElement';
   loc: ?Location;
-  name: JSXIdentifierNode | JSXMemberExpressionNode;
-  attributes: $ReadOnlyArray<JSXAttributeNode | JSXSpreadAttributeNode>;
+  name: JSXClosingElementNameNode;
+  attributes: $ReadOnlyArray<JSXOpeningElementAttributesNode>;
   selfClosing: boolean;
 
   // alias: JSX
@@ -909,6 +925,7 @@ declare class JSXSpreadAttributeNode {
   argument: ExpressionNode;
 
   // alias: JSX
+  // alias: JSXOpeningElementAttributes
   // alias: Babel
 }
 
@@ -919,6 +936,7 @@ declare class JSXSpreadChildNode {
 
   // alias: JSX
   // alias: Immutable
+  // alias: JSXElementChildren
   // alias: Babel
 }
 
@@ -929,6 +947,7 @@ declare class JSXTextNode {
 
   // alias: JSX
   // alias: Immutable
+  // alias: JSXElementChildren
   // alias: Babel
 }
 
@@ -989,7 +1008,7 @@ declare class NewExpressionNode {
   type: 'NewExpression';
   loc: ?Location;
   callee: ExpressionNode;
-  arguments: $ReadOnlyArray<ExpressionNode | SpreadElementNode>;
+  arguments: $ReadOnlyArray<ArrayExpressionElementsNode>;
 
   // alias: Expression
   // alias: Babel
@@ -1063,7 +1082,7 @@ declare class NumericLiteralTypeAnnotationNode {
 declare class ObjectExpressionNode {
   type: 'ObjectExpression';
   loc: ?Location;
-  properties: $ReadOnlyArray<ObjectMethodNode | ObjectPropertyNode | SpreadPropertyNode>;
+  properties: $ReadOnlyArray<ObjectExpressionPropertiesNode>;
 
   // alias: Expression
   // alias: Babel
@@ -1090,13 +1109,14 @@ declare class ObjectMethodNode {
   // alias: FunctionParent
   // alias: Method
   // alias: ObjectMember
+  // alias: ObjectExpressionProperties
   // alias: Babel
 }
 
 declare class ObjectPatternNode {
   type: 'ObjectPattern';
   loc: ?Location;
-  properties: $ReadOnlyArray<RestPropertyNode | PropertyNode>;
+  properties: $ReadOnlyArray<ObjectPatternPropertiesNode>;
   typeAnnotation: mixed;
   decorators: ?$ReadOnlyArray<DecoratorNode>;
 
@@ -1109,7 +1129,7 @@ declare class ObjectPropertyNode {
   type: 'ObjectProperty';
   loc: ?Location;
   key: ExpressionNode;
-  value: ExpressionNode | PatternNode | RestElementNode;
+  value: ObjectPropertyValueNode;
   computed: boolean;
   shorthand: boolean;
   decorators: ?$ReadOnlyArray<DecoratorNode>;
@@ -1117,6 +1137,7 @@ declare class ObjectPropertyNode {
   // alias: UserWhitespacable
   // alias: Property
   // alias: ObjectMember
+  // alias: ObjectExpressionProperties
   // alias: Babel
 }
 
@@ -1226,6 +1247,8 @@ declare class RestElementNode {
   decorators: ?$ReadOnlyArray<DecoratorNode>;
 
   // alias: LVal
+  // alias: ArrayPatternElements
+  // alias: ObjectPropertyValue
   // alias: Babel
 }
 
@@ -1235,6 +1258,7 @@ declare class RestPropertyNode {
   argument: LValNode;
 
   // alias: UnaryLike
+  // alias: ObjectPatternProperties
   // alias: Babel
 }
 
@@ -1264,6 +1288,7 @@ declare class SpreadElementNode {
   argument: ExpressionNode;
 
   // alias: UnaryLike
+  // alias: ArrayExpressionElements
   // alias: Babel
 }
 
@@ -1273,6 +1298,7 @@ declare class SpreadPropertyNode {
   argument: ExpressionNode;
 
   // alias: UnaryLike
+  // alias: ObjectExpressionProperties
   // alias: Babel
 }
 
@@ -1285,6 +1311,7 @@ declare class StringLiteralNode {
   // alias: Pureish
   // alias: Literal
   // alias: Immutable
+  // alias: JSXAttributeValue
   // alias: Babel
 }
 
@@ -1524,6 +1551,8 @@ declare class VariableDeclarationNode {
 
   // alias: Statement
   // alias: Declaration
+  // alias: ForAwaitStatementLeft
+  // alias: ForStatementInit
   // alias: Babel
 }
 
@@ -1549,7 +1578,7 @@ declare class WhileStatementNode {
   type: 'WhileStatement';
   loc: ?Location;
   test: ExpressionNode;
-  body: BlockStatementNode | StatementNode;
+  body: WhileStatementBodyNode;
 
   // alias: Statement
   // alias: BlockParent
@@ -1563,7 +1592,7 @@ declare class WithStatementNode {
   type: 'WithStatement';
   loc: ?Location;
   object: mixed;
-  body: BlockStatementNode | StatementNode;
+  body: WhileStatementBodyNode;
 
   // alias: Statement
   // alias: Babel
@@ -2132,6 +2161,99 @@ type UnaryLikeNode = (
   | SpreadElementNode
   | SpreadPropertyNode
   | UnaryExpressionNode
+);
+
+type ArrayExpressionElementsNode = (
+  | ExpressionNode
+  | SpreadElementNode
+);
+
+type ArrayPatternElementsNode = (
+  | IdentifierNode
+  | PatternNode
+  | RestElementNode
+);
+
+type ArrowFunctionExpressionBodyNode = (
+  | BlockStatementNode
+  | ExpressionNode
+);
+
+type ClassBodyBodyNode = (
+  | ClassMethodNode
+  | ClassPropertyNode
+);
+
+type ExportDefaultDeclarationDeclarationNode = (
+  | ClassDeclarationNode
+  | ExpressionNode
+  | FunctionDeclarationNode
+);
+
+type ForAwaitStatementLeftNode = (
+  | LValNode
+  | VariableDeclarationNode
+);
+
+type ForStatementInitNode = (
+  | ExpressionNode
+  | VariableDeclarationNode
+);
+
+type ImportDeclarationSpecifiersNode = (
+  | ImportDefaultSpecifierNode
+  | ImportNamespaceSpecifierNode
+  | ImportSpecifierNode
+);
+
+type JSXAttributeNameNode = (
+  | JSXIdentifierNode
+  | JSXNamespacedNameNode
+);
+
+type JSXAttributeValueNode = (
+  | JSXElementNode
+  | JSXExpressionContainerNode
+  | StringLiteralNode
+);
+
+type JSXClosingElementNameNode = (
+  | JSXIdentifierNode
+  | JSXMemberExpressionNode
+);
+
+type JSXElementChildrenNode = (
+  | JSXElementNode
+  | JSXExpressionContainerNode
+  | JSXSpreadChildNode
+  | JSXTextNode
+);
+
+type JSXOpeningElementAttributesNode = (
+  | JSXAttributeNode
+  | JSXSpreadAttributeNode
+);
+
+type ObjectExpressionPropertiesNode = (
+  | ObjectMethodNode
+  | ObjectPropertyNode
+  | SpreadPropertyNode
+);
+
+type ObjectPatternPropertiesNode = (
+  | PropertyNode
+  | RestPropertyNode
+);
+
+type ObjectPropertyValueNode = (
+  | ExpressionNode
+  | PatternNode
+  | RestElementNode
+);
+
+type WhileStatementBodyNode = (
+  | BlockStatementNode
+  | StatementNode
 );
 
 type JSXValueNode = JSXTextNode | JSXExpressionContainerNode | JSXSpreadChildNode | JSXElementNode;
