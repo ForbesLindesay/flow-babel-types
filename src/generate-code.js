@@ -157,13 +157,13 @@ function getType(key, field) {
         throw ex;
       }
       if (field === 'id') {
-        return 'Identifier';
+        return 'IdentifierNode';
       }
       return 'mixed';
     }
   } else {
     if (field === 'id') {
-      return 'Identifier';
+      return 'IdentifierNode';
     }
     return 'mixed';
   }

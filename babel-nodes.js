@@ -264,7 +264,7 @@ declare class ClassExpressionNode {
 declare class ClassImplementsNode {
   type: 'ClassImplements',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   typeParameters: mixed,
 
   // alias: Flow
@@ -342,7 +342,7 @@ declare class DebuggerStatementNode {
 declare class DeclareClassNode {
   type: 'DeclareClass',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   typeParameters: mixed,
   extends: mixed,
   body: mixed,
@@ -357,7 +357,7 @@ declare class DeclareClassNode {
 declare class DeclareFunctionNode {
   type: 'DeclareFunction',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
 
   // alias: Flow
   // alias: FlowDeclaration
@@ -369,7 +369,7 @@ declare class DeclareFunctionNode {
 declare class DeclareInterfaceNode {
   type: 'DeclareInterface',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   typeParameters: mixed,
   extends: mixed,
   body: mixed,
@@ -384,7 +384,7 @@ declare class DeclareInterfaceNode {
 declare class DeclareModuleNode {
   type: 'DeclareModule',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   body: mixed,
 
   // alias: Flow
@@ -409,7 +409,7 @@ declare class DeclareModuleExportsNode {
 declare class DeclareTypeAliasNode {
   type: 'DeclareTypeAlias',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   typeParameters: mixed,
   right: mixed,
 
@@ -423,7 +423,7 @@ declare class DeclareTypeAliasNode {
 declare class DeclareVariableNode {
   type: 'DeclareVariable',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
 
   // alias: Flow
   // alias: FlowDeclaration
@@ -721,7 +721,7 @@ declare class FunctionTypeParamNode {
 declare class GenericTypeAnnotationNode {
   type: 'GenericTypeAnnotation',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   typeParameters: mixed,
 
   // alias: Flow
@@ -808,7 +808,7 @@ declare class ImportSpecifierNode {
 declare class InterfaceDeclarationNode {
   type: 'InterfaceDeclaration',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   typeParameters: mixed,
   extends: mixed,
   body: mixed,
@@ -823,7 +823,7 @@ declare class InterfaceDeclarationNode {
 declare class InterfaceExtendsNode {
   type: 'InterfaceExtends',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   typeParameters: mixed,
 
   // alias: Flow
@@ -1190,7 +1190,7 @@ declare class ObjectTypeCallPropertyNode {
 declare class ObjectTypeIndexerNode {
   type: 'ObjectTypeIndexer',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   key: mixed,
   value: mixed,
 
@@ -1246,7 +1246,7 @@ declare class ProgramNode {
 declare class QualifiedTypeIdentifierNode {
   type: 'QualifiedTypeIdentifier',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   qualification: mixed,
 
   // alias: Flow
@@ -1468,7 +1468,7 @@ declare class TupleTypeAnnotationNode {
 declare class TypeAliasNode {
   type: 'TypeAlias',
   loc: ?Location,
-  id: Identifier,
+  id: IdentifierNode,
   typeParameters: mixed,
   right: mixed,
 
