@@ -26,7 +26,8 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "prepublish": "npm run build && (git diff-index --quiet HEAD -- || echo You must build and commit changes) && git diff-index --quiet HEAD --",
+    "prepublish": "npm run build",
+    "check-working-dir-clean": "(git diff-index --quiet HEAD -- || echo You must build and commit changes) && git diff-index --quiet HEAD --",
     "prettier:config": "prettier --single-quote --trailing-comma all --no-bracket-spacing",
     "prettier:paths": "npm run prettier:config -- \"src/**/*.js\" \"babel-nodes.js\" \"lib/index.js.flow\"",
     "prettier": "npm run prettier:paths -- --write",
